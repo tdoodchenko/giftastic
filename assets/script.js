@@ -5,27 +5,25 @@ var api = "http://api.giphy.com/v1/gifs/search?q=";
 var apiKey = "&api_key=91MZmGxNLIlQVLWjGAyMYps2DaSXcurr&limit=10";
 
 
-var gifArray = ["hockey", "baseball", "guitar", "wow", "LOL", "Ron Swanson", "Walking Dead", "Peanuts"];
+var gifArray = ["hockey", "baseball", "guitar", "wow", "LOL", "Ron Swanson", "Walking Dead", "Peanuts", "beer"];
 
-for(var i = 0; i < gifArray.length; i++) {
-    var newStr = gifArray[i].replace(/\s+/g, '');
-    console.log(newStr);
-}
-
-
+// for(var i = 0; i < gifArray.length; i++) {
+//     var newStr = gifArray[i].replace(/\s+/g, '');
+//     console.log(newStr);
+// }
 
 
 //show array gif buttons
 function showGifButtons() {
     
-    $("gifButtons").empty();
+    $("#gifButtons").empty();
 
     for(var i = 0; i < gifArray.length; i++) {
-        var newStr = gifArray[i].replace(/\s+/g, '');
+        
         var gifBtn = $("<button>");
         gifBtn.addClass("search");
         gifBtn.addClass("btn btn-primary");
-        gifBtn.attr("data-name", newStr);
+        gifBtn.attr("data-name", gifArray[i].replace(/\s+/g, ''));
         gifBtn.text(gifArray[i]);
         $("#gifButtons").append(gifBtn);
 
@@ -55,6 +53,8 @@ function displayGifs(){
             var gifs = $("<div>");
             gifs.addClass("gifs");
             var images = $("<img>");
+            var gifRating = $("<p>").text("Rating: " + findGif[i].rating);
+                gifs.append(gifRating);
             images.attr("src",findGif[i].images.fixed_height_still.url);
             images.attr("data-still",findGif[i].images.fixed_height_still.url);
             images.attr("data-animate",findGif[i].images.fixed_height.url);
@@ -68,9 +68,26 @@ function displayGifs(){
     });
 }
 
+function addGifSearch() {
+    $("#addGif").on("click", function(){
+        var gifSearch = $("#input").val().trim();
+        if (gifSearch == ""){
+          return false;
+        }
+        gifArray.push(gifSearch);
+        $("#gifButtons").empty();
+        showGifButtons();
+        
+        return false;
+        });
+    
+}
 
 showGifButtons();
-displayGifs();
+addGifSearch();
+
+
+
 
 $(document).on("click", ".search", displayGifs);
 $(document).on("click", ".click", function(){
